@@ -1,0 +1,3 @@
+package dev.tiertagger.client.mixin;
+import dev.tiertagger.client.Tags;import net.minecraft.client.renderer.entity.EntityRenderer;import net.minecraft.world.entity.Entity;import net.minecraft.world.entity.player.Player;import net.minecraft.network.chat.Component;import org.spongepowered.asm.mixin.Mixin;import org.spongepowered.asm.mixin.injection.*;import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+@Mixin(EntityRenderer.class) public abstract class NameMixin {@Inject(method="getNameTag",at=@At("RETURN"),cancellable=true) private void tiers$name(Entity e,CallbackInfoReturnable<Component> c){if(e instanceof Player)c.setReturnValue(Tags.decorate(e.getUUID(),c.getReturnValue(),false));}}

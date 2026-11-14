@@ -1,0 +1,1 @@
+{"schemaVersion":1,"id":"tier_tagger_tests","version":"1.0.0","name":"Tier Tagger Tests","environment":"client","entrypoints":{"fabric-client-gametest":["dev.tiertagger.client.ScreenTest"]}}

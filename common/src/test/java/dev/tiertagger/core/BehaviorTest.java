@@ -1,0 +1,8 @@
+package dev.tiertagger.core;
+import org.junit.jupiter.api.Test;import java.util.*;import static org.junit.jupiter.api.Assertions.*;import static dev.tiertagger.core.TagSelection.*;
+class BehaviorTest {
+ @Test void defaultsAndMissingPrimary(){var s=Settings.defaults();assertEquals("mctiers",s.primary().provider());assertEquals("crystal",s.sharedMode());var custom=new Settings("crystal",s.primary(),new Slot("lunar",null),new Slot("other","sword"));Rankings r=(provider,mode)->provider.equals("mctiers")?Optional.empty():Optional.of(mode.equals("sword")?"HT2":"LT3");assertTrue(tabTag(custom,r).isEmpty());assertEquals(List.of(new Tag("lunar","crystal","LT3"),new Tag("other","sword","HT2")),nameTag(custom,r));}
+ @Test void mappingsAndRetiredPeak(){var ranks=McTiersParser.parse("{\"vanilla\":{\"tier\":3,\"pos\":1,\"retired\":false},\"sword\":{\"tier\":4,\"pos\":1,\"peak_tier\":2,\"peak_pos\":0,\"retired\":true},\"nethop\":{\"tier\":8,\"pos\":0}}");assertEquals(Map.of("crystal","LT3","sword","HT2"),ranks);}
+ @Test void modeIconsAreSharedUnlessOverridden(){var global=Map.of("sword","set-one");assertEquals("set-one",IconPreferences.selected("sword",global,Map.of()));assertEquals("set-two",IconPreferences.selected("sword",global,Map.of("sword","set-two")));assertEquals("default",IconPreferences.selected("crystal",global,Map.of()));}
+ @Test void tierTestsUsesSharedModesAndOwnTierScale(){String json="{\"success\":true,\"data\":[{\"gamemode\":{\"name\":\"SWORD\"},\"tier\":\"B_MINUS\"},{\"gamemode\":{\"name\":\"CRYSTAL\"},\"tier\":\"A_PLUS\"},{\"gamemode\":{\"name\":\"NETH\"},\"tier\":\"NONE\"}]}";assertEquals(Map.of("sword","B-","crystal","A+"),TierTestsClient.parse(json));}
+}

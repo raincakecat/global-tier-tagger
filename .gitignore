@@ -1,0 +1,30 @@
+# Build products, launchers, caches, and runtime player data
+.gradle/
+**/build/
+**/run/
+**/logs/
+**/crash-reports/
+**/screenshots/
+**/saves/
+**/config/
+# Credentials and local configuration
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+local.properties
+secrets.*
+credentials.*
+# Editor and OS files
+.idea/
+.vscode/
+*.iml
+Thumbs.db
+.DS_Store
+__pycache__/
+*.pyc

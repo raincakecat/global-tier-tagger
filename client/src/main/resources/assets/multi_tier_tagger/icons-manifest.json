@@ -1,0 +1,182 @@
+[
+  {
+    "name": "crystal-set1",
+    "discordId": "1529032989248585778",
+    "glyph": 57344,
+    "source": "https://cdn.discordapp.com/emojis/1529032989248585778.png"
+  },
+  {
+    "name": "sword-set1",
+    "discordId": "1510869328793440286",
+    "glyph": 57345,
+    "source": "https://cdn.discordapp.com/emojis/1510869328793440286.png"
+  },
+  {
+    "name": "axe-set1",
+    "discordId": "1389199593799028747",
+    "glyph": 57346,
+    "source": "https://cdn.discordapp.com/emojis/1389199593799028747.png"
+  },
+  {
+    "name": "smp-set1",
+    "discordId": "1529034975729418360",
+    "glyph": 57347,
+    "source": "https://cdn.discordapp.com/emojis/1529034975729418360.png"
+  },
+  {
+    "name": "pot-set1",
+    "discordId": "1559425945016860702",
+    "glyph": 57348,
+    "source": "https://cdn.discordapp.com/emojis/1559425945016860702.png"
+  },
+  {
+    "name": "mace-set1",
+    "discordId": "1391859118892912752",
+    "glyph": 57349,
+    "source": "https://cdn.discordapp.com/emojis/1391859118892912752.png"
+  },
+  {
+    "name": "uhc-set1",
+    "discordId": "1559428125891371089",
+    "glyph": 57350,
+    "source": "https://cdn.discordapp.com/emojis/1559428125891371089.png"
+  },
+  {
+    "name": "nethpot-set1",
+    "discordId": "1476510781607510067",
+    "glyph": 57351,
+    "source": "https://cdn.discordapp.com/emojis/1476510781607510067.png"
+  },
+  {
+    "name": "spear-mace-set1",
+    "discordId": "1547107112495095849",
+    "glyph": 57352,
+    "source": "https://cdn.discordapp.com/emojis/1547107112495095849.png"
+  },
+  {
+    "name": "crystal-set2",
+    "discordId": "1565462440408252426",
+    "glyph": 57353,
+    "source": "https://cdn.discordapp.com/emojis/1565462440408252426.png"
+  },
+  {
+    "name": "sword-set2",
+    "discordId": "1552740204631293992",
+    "glyph": 57354,
+    "source": "https://cdn.discordapp.com/emojis/1552740204631293992.png"
+  },
+  {
+    "name": "axe-set2",
+    "discordId": "1557745505818386573",
+    "glyph": 57355,
+    "source": "https://cdn.discordapp.com/emojis/1557745505818386573.png"
+  },
+  {
+    "name": "smp-set2",
+    "discordId": "1476510940294938665",
+    "glyph": 57356,
+    "source": "https://cdn.discordapp.com/emojis/1476510940294938665.png"
+  },
+  {
+    "name": "pot-set2",
+    "discordId": "1552741121858473995",
+    "glyph": 57357,
+    "source": "https://cdn.discordapp.com/emojis/1552741121858473995.png"
+  },
+  {
+    "name": "mace-set2",
+    "discordId": "1557746029246418964",
+    "glyph": 57358,
+    "source": "https://cdn.discordapp.com/emojis/1557746029246418964.png"
+  },
+  {
+    "name": "uhc-set2",
+    "discordId": "1557747136576233512",
+    "glyph": 57359,
+    "source": "https://cdn.discordapp.com/emojis/1557747136576233512.png"
+  },
+  {
+    "name": "nethpot-set2",
+    "discordId": "1411267823870939197",
+    "glyph": 57360,
+    "source": "https://cdn.discordapp.com/emojis/1411267823870939197.png"
+  },
+  {
+    "name": "spear-mace-set2",
+    "discordId": "1569942731210358874",
+    "glyph": 57361,
+    "source": "https://cdn.discordapp.com/emojis/1569942731210358874.png"
+  },
+  {
+    "name": "minecart",
+    "discordId": "1491790929982656673",
+    "glyph": 57376,
+    "source": "https://cdn.discordapp.com/emojis/1491790929982656673.png"
+  },
+  {
+    "name": "og-vanilla",
+    "discordId": "1570205072221012108",
+    "glyph": 57377,
+    "source": "https://cdn.discordapp.com/emojis/1570205072221012108.png"
+  },
+  {
+    "name": "debuff",
+    "discordId": "1368570447578533908",
+    "glyph": 57378,
+    "source": "https://cdn.discordapp.com/emojis/1368570447578533908.png"
+  },
+  {
+    "name": "elytra",
+    "discordId": "1346304893576675338",
+    "glyph": 57379,
+    "source": "https://cdn.discordapp.com/emojis/1346304893576675338.png"
+  },
+  {
+    "name": "manhunt",
+    "discordId": "1250488848304308308",
+    "glyph": 57380,
+    "source": "https://cdn.discordapp.com/emojis/1250488848304308308.png"
+  },
+  {
+    "name": "trident",
+    "discordId": "1346304943509995603",
+    "glyph": 57381,
+    "source": "https://cdn.discordapp.com/emojis/1346304943509995603.png"
+  },
+  {
+    "name": "speed",
+    "discordId": "1273644050561503374",
+    "glyph": 57382,
+    "source": "https://cdn.discordapp.com/emojis/1273644050561503374.png"
+  },
+  {
+    "name": "diamond-vanilla",
+    "discordId": "1536440635341672469",
+    "glyph": 57383,
+    "source": "https://cdn.discordapp.com/emojis/1536440635341672469.png"
+  },
+  {
+    "name": "bed",
+    "discordId": "1546636583241916527",
+    "glyph": 57384,
+    "source": "https://cdn.discordapp.com/emojis/1546636583241916527.png"
+  },
+  {
+    "name": "creeper",
+    "discordId": "1273825972436598848",
+    "glyph": 57385,
+    "source": "https://cdn.discordapp.com/emojis/1273825972436598848.png"
+  },
+  {
+    "name": "diamond-smp",
+    "discordId": "1471685837099106537",
+    "glyph": 57386,
+    "source": "https://cdn.discordapp.com/emojis/1471685837099106537.png"
+  },
+  {
+    "name": "bow",
+    "discordId": "1522235676987228340",
+    "glyph": 57387,
+    "source": "https://cdn.discordapp.com/emojis/1522235676987228340.png"
+  }
+]

@@ -1,0 +1,31 @@
+def targetJava = project.ext.javaVersion as int
+base { archivesName = "global-tier-tagger-${minecraftVersion}" }
+java { toolchain { languageVersion = JavaLanguageVersion.of(targetJava) } }
+def selectedApiVersion = providers.gradleProperty("fabricApi.${project.name}").getOrElse(apiVersion)
+
+dependencies {
+ minecraft "com.mojang:minecraft:${minecraftVersion}"
+ if (targetJava == 21) { mappings loom.officialMojangMappings(); modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"; modImplementation "net.fabricmc.fabric-api:fabric-api:${selectedApiVersion}" }
+ else { implementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"; implementation "net.fabricmc.fabric-api:fabric-api:${selectedApiVersion}" }
+}
+sourceSets.main.java.srcDirs += [rootProject.file('common/src/main/java'), rootProject.file('client/src/main/java')]
+sourceSets.main.resources.srcDirs += [rootProject.file('client/src/main/resources')]
+if (targetJava == 25) sourceSets.main.java.srcDirs += [rootProject.file('client26/src/main/java')]
+processResources { inputs.property 'version',project.version; inputs.property 'minecraftVersion',minecraftVersion; inputs.property 'loaderVersion',rootProject.loader_version; inputs.property 'javaVersion',targetJava; inputs.property 'apiMinimum',apiVersion; filesMatching('fabric.mod.json') { expand version:project.version, minecraftVersion:minecraftVersion, loaderVersion:rootProject.loader_version, javaVersion:targetJava, apiMinimum:apiVersion } }
+tasks.withType(JavaCompile).configureEach { options.release = targetJava; options.encoding = 'UTF-8' }
+
+tasks.named('jar', Jar) {
+ from(rootProject.file('LICENSE'))
+ from(rootProject.file('THIRD-PARTY-NOTICES.md'))
+ from(rootProject.file('third-party/gradle-LICENSE.txt')) { into 'third-party' }
+}
+
+fabricApi { configureTests { createSourceSet=true; modId="tier-tagger-test-${project.name}"; enableGameTests=false; enableClientGameTests=true; eula=true } }
+sourceSets.gametest.java.srcDirs += [rootProject.file('gametest/src/main/java')]
+sourceSets.gametest.resources.srcDirs += [rootProject.file('gametest/src/main/resources')]
+
+// Mojang 26.3's official JVM arguments reserve more native stack for RenderPearl.
+// Loom's dev launcher does not import this version-metadata argument automatically.
+if (minecraftVersion == '26.3') {
+ tasks.withType(JavaExec).configureEach { jvmArgs '-XX:StackShadowPages=32' }
+}

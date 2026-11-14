@@ -1,0 +1,3 @@
+pluginManagement { repositories { maven { url = 'https://maven.fabricmc.net/' }; mavenCentral(); gradlePluginPortal() } }
+rootProject.name = 'global-tier-tagger'
+include 'common', 'mc12111', 'mc2612', 'mc262', 'mc263'

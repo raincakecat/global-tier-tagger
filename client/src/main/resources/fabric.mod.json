@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "multi_tier_tagger",
+  "version": "${version}",
+  "name": "Global Tier Tagger",
+  "license": "LicenseRef-All-Rights-Reserved",
+  "description": "View tiers from multiple tier lists.",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.tiertagger.client.TierTagger"
+    ]
+  },
+  "mixins": [
+    "tier-tagger.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loaderVersion}",
+    "fabric-api": ">=${apiMinimum}",
+    "minecraft": "${minecraftVersion}",
+    "java": ">=${javaVersion}"
+  },
+  "authors": [
+    "raincakecat"
+  ],
+  "contact": {
+    "sources": "https://github.com/raincakecat/global-tier-tagger",
+    "issues": "https://discord.gg/j3QxZ7xYR4",
+    "discord": "https://discord.gg/j3QxZ7xYR4"
+  },
+  "icon": "assets/multi_tier_tagger/icon.png"
+}

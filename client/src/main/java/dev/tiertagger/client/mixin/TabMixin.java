@@ -1,0 +1,3 @@
+package dev.tiertagger.client.mixin;
+import dev.tiertagger.client.Tags;import net.minecraft.client.gui.components.PlayerTabOverlay;import net.minecraft.client.multiplayer.PlayerInfo;import net.minecraft.network.chat.Component;import org.spongepowered.asm.mixin.Mixin;import org.spongepowered.asm.mixin.injection.*;import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+@Mixin(PlayerTabOverlay.class) public abstract class TabMixin {@Inject(method="getNameForDisplay",at=@At("RETURN"),cancellable=true) private void tiers$tab(PlayerInfo p,CallbackInfoReturnable<Component> c){c.setReturnValue(Tags.decorate(p.getProfile().id(),c.getReturnValue(),true));}}

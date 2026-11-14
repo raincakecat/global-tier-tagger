@@ -1,0 +1,382 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/crystal-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue000"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/sword-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue001"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/axe-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue002"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/smp-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue003"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/pot-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue004"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/mace-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue005"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/uhc-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue006"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/nethpot-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue007"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/spear-mace-set1.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue008"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/crystal-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue009"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/sword-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue00a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/axe-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue00b"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/smp-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue00c"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/pot-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue00d"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/mace-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue00e"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/uhc-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue00f"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/nethpot-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue010"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/spear-mace-set2.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue011"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/minecart.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue020"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/og-vanilla.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue021"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/debuff.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue022"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/elytra.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue023"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/manhunt.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue024"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/trident.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue025"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/speed.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue026"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/diamond-vanilla.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue027"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/bed.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue028"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/creeper.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue029"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/diamond-smp.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue02a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "multi_tier_tagger:icons/bow.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue02b"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/trident.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue040"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/ender_pearl.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue041"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/minecart.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue042"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/pufferfish.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue043"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/diamond_shovel.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue044"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/elytra.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue045"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/diamond_chestplate.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue046"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/wooden_sword.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue047"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/end_crystal.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue048"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/netherite_chestplate.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue049"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/diamond.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue04a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:item/diamond_helmet.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue04b"
+      ]
+    }
+  ]
+}

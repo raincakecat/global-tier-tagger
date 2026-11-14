@@ -1,0 +1,1 @@
+{"required":true,"package":"dev.tiertagger.client.mixin","compatibilityLevel":"JAVA_21","client":["NameMixin","TabMixin"],"injectors":{"defaultRequire":1}}
