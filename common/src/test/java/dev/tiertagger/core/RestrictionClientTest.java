@@ -11,6 +11,11 @@ import java.util.concurrent.atomic.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RestrictionClientTest {
+ @Test void nonJsonRateLimitStillHasItsRealFailureCodeAndInvalidUuidNeverQueries() throws Exception {
+  var server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);var calls=new AtomicInteger();server.createContext("/",e->{calls.incrementAndGet();e.getResponseHeaders().add("Retry-After","120");respond(e,429,"<html>rate limited</html>");});server.start();
+  try(var client=new RestrictionClient(base(server))){assertThrows(ExecutionException.class,()->client.lookup(new UUID(0,0),1).get());assertEquals(0,calls.get());ExecutionException error=assertThrows(ExecutionException.class,()->client.lookup(ID,1).get(5,TimeUnit.SECONDS));assertInstanceOf(RestrictionClient.Failure.class,error.getCause());assertEquals("RATE_LIMITED",((RestrictionClient.Failure)error.getCause()).code);assertTrue(client.cooldownSeconds()>=119);}
+  finally{server.stop(0);}
+ }
  static final UUID ID=UUID.fromString("11111111-2222-4333-8444-555555555555");
  static JsonObject body(UUID id,int page){return JsonParser.parseString("""
  {"data":{"player":{"uuid":"%s","username":"FixturePlayer","nameUnavailable":false,"profileUrl":"https://restricttiers.raincakecat.com/player/%s"},"counts":{"active":1,"past":1},"active":[{"community":"Fixture community","reason":"A deliberately long example restriction reason","categories":["Fixture"],"durationDays":null,"restrictedAt":null,"expiresAt":null,"archivedAt":null,"verification":"needs_review","sourceUrl":"https://example.org/source"}],"past":[],"pagination":{"page":%d,"pageSize":50,"totalPages":2,"nextPage":%s,"nextUrl":null},"limits":{"activeMaximum":100,"pastPerPage":50,"maximumPage":10000,"activeTruncated":true,"pastTruncated":true,"hasMorePast":true,"beyondPageLimit":false},"sample":true,"notice":"Fixture only"},"meta":{"apiVersion":"1","requestId":"fixture-id","respondedAt":"2026-11-12T12:00:00Z"}}

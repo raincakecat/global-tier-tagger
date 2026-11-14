@@ -7,7 +7,7 @@ import java.net.*;import java.nio.charset.StandardCharsets;import java.util.*;im
 final class RestrictionScreenTest {
  static void check(boolean value,String why){if(!value)throw new AssertionError(why);}
  static void run(ClientGameTestContext context){
-  final UUID[] uuid={null};final String[] name={null};context.runOnClient(client->{uuid[0]=client.player.getUUID();name[0]=client.player.getName().getString();});
+  final UUID[] uuid={null};final String[] name={null};context.runOnClient(client->{uuid[0]=PlayerLookup.supported(client.player.getUUID())?client.player.getUUID():UUID.fromString("44444444-4444-4444-8444-444444444444");name[0]=client.player.getName().getString();});
   MinecraftIdentityResolver previousResolver=RestrictionChecks.identities;RestrictionClient previousApi=RestrictionChecks.api;
   HttpServer server;AtomicInteger calls=new AtomicInteger();AtomicBoolean mismatch=new AtomicBoolean();
   try{server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);server.createContext("/",e->{String path=e.getRequestURI().getPath();String body;int code=200;

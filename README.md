@@ -2,7 +2,7 @@
 
 <img src="branding/icon-512.png" width="128" height="128" alt="Global Tier Tagger logo">
 
-**By raincakecat · Version 1.0.0**
+**By raincakecat · Version 1.0.1**
 
 A client-side Fabric mod that displays Minecraft PvP tiers from multiple
 communities in one place.
@@ -82,11 +82,15 @@ have different ranking formats, game modes, and cache schedules.
 - `mc12111`, `mc2612`, `mc262`, `mc263`: version-specific Fabric builds.
 - `gametest`: synthetic client test fixtures, excluded from production JARs.
 
-The executable code was tested against the three Fabric API versions per
-Minecraft target listed in [the compatibility manifest](docs/compatibility-versions.json).
-The release has 36 common unit tests and 12 previously completed client/API
-combinations. Subsequent 1.0.0 branding and license edits change resources
-and metadata only. Those client tests were not rerun for the icon change.
+Version **1.0.1** fixes invalid-UUID requests, per-player error isolation,
+request pacing, foreground queue priority, and profile progress. It also
+preserves successful Nexus modes when another mode fails, and separates
+incomplete Lunar batch profiles from successful ones.
+
+Validation includes **52 common regression tests**, live checks through all
+**14 ranking adapters**, and the 12 client/Fabric API combinations in
+[the compatibility manifest](docs/compatibility-versions.json). Read the
+[reliability audit](docs/reliability-1.0.1.md) for scope and practical limits.
 
 Build entry points (subject to the license; publication of source does not
 grant permission to distribute builds or modified versions):

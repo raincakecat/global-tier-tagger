@@ -5,7 +5,7 @@ import java.util.*;
 public final class McTiersParser {
  private McTiersParser() {}
  public static Map<String,String> parse(String json) {
-  JsonObject root=JsonParser.parseString(json).getAsJsonObject(); Map<String,String> result=new HashMap<>();
+  JsonObject root=JsonParser.parseString(json).getAsJsonObject();if(root.has("error")&&!root.get("error").isJsonNull())throw new IllegalArgumentException("MCTiers returned an error response"); Map<String,String> result=new HashMap<>();
   for(String mode:GameModes.ALL) { JsonElement e=root.get(GameModes.mctiersKey(mode)); if(e==null || !e.isJsonObject()) continue;
    JsonObject rank=e.getAsJsonObject(); boolean retired=rank.has("retired") && rank.get("retired").getAsBoolean();
    String tier=retired && rank.has("peak_tier") && !rank.get("peak_tier").isJsonNull() ? "peak_tier" : "tier";

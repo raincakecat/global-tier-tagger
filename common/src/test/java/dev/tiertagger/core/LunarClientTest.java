@@ -7,6 +7,12 @@ import java.net.*;import java.nio.charset.StandardCharsets;import java.util.*;im
 import static org.junit.jupiter.api.Assertions.*;
 
 class LunarClientTest {
+ @Test void incompleteBatchOnlyFailsTheMissingPlayer() throws Exception {
+  HttpServer server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);UUID good=UUID.randomUUID(),missing=UUID.randomUUID();
+  server.createContext("/",e->{byte[] body=("{\"schemaVersion\":1,\"cacheSeconds\":120,\"players\":{\""+good.toString().replace("-","")+"\":{\"sword\":\"HT2\"}}}").getBytes(StandardCharsets.UTF_8);e.sendResponseHeaders(200,body.length);e.getResponseBody().write(body);e.close();});server.start();
+  try(var p=new LunarClient(URI.create("http://127.0.0.1:"+server.getAddress().getPort()+"/"))){p.request(good);p.request(missing);ProviderSafetyTest.await(()->p.lookup(missing).failed());assertTrue(p.resolved(good));assertFalse(p.resolved(missing));assertEquals("HT2",p.tier(good,"sword").orElseThrow());assertEquals(0,p.retryAtMillis());assertEquals("Lunar Tiers connected",p.status());}
+  finally{server.stop(0);}
+ }
  @Test void decodeRejectsPartialOrInvalidResponses(){
   UUID id=UUID.fromString("12345678-1234-4234-8234-123456789abc");String key=id.toString().replace("-","");
   String good="{\"schemaVersion\":1,\"cacheSeconds\":60,\"players\":{\""+key+"\":{\"spear-mace\":\"HT3\",\"sword\":\"LT2\"}}}";
@@ -22,7 +28,7 @@ class LunarClientTest {
    JsonObject root=new JsonObject();root.addProperty("schemaVersion",1);root.addProperty("cacheSeconds",60);root.add("players",players);byte[] bytes=root.toString().getBytes(StandardCharsets.UTF_8);exchange.sendResponseHeaders(200,bytes.length);exchange.getResponseBody().write(bytes);
   }finally{exchange.close();}});server.start();
   try(var client=new LunarClient(URI.create("http://127.0.0.1:"+server.getAddress().getPort()+"/v1/ranks/lookup"))){
-   List<UUID> ids=new ArrayList<>();for(int i=0;i<101;i++){UUID id=new UUID(0,i);ids.add(id);client.request(id);}
+   List<UUID> ids=new ArrayList<>();for(int i=0;i<101;i++){UUID id=new UUID(0x4000L,0x8000000000000000L|i);ids.add(id);client.request(id);}
    long deadline=System.nanoTime()+java.util.concurrent.TimeUnit.SECONDS.toNanos(10);while(client.tier(ids.getLast(),"sword").isEmpty()&&System.nanoTime()<deadline)Thread.sleep(30);
    assertEquals("HT3",client.tier(ids.getLast(),"sword").orElseThrow());assertEquals(2,calls.get());
    client.request(ids.getFirst());Thread.sleep(200);assertEquals(2,calls.get());client.clear();assertTrue(client.tier(ids.getFirst(),"sword").isEmpty());

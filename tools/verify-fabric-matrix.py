@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess,json,time,hashlib,shutil,argparse
 ROOT=Path(__file__).resolve().parents[1]
 projects={'1.21.11':'mc12111','26.1.2':'mc2612','26.2':'mc262','26.3':'mc263'}
-parser=argparse.ArgumentParser();parser.add_argument('--minecraft',choices=list(projects));parser.add_argument('--manifest',default='build/verification/fabric-api-compatibility-versions.json');parser.add_argument('--output',default='build/verification/fabric-api-matrix-results.json');parser.add_argument('--folder',default='build/verification/fabric-matrix');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--minecraft',choices=list(projects));parser.add_argument('--manifest',default='build/verification/fabric-api-compatibility-versions.json');parser.add_argument('--output',default='build/verification/fabric-api-matrix-results.json');parser.add_argument('--folder',default='build/verification/fabric-matrix');parser.add_argument('--fail-fast',action='store_true');args=parser.parse_args()
 manifest=json.loads((ROOT/args.manifest).read_text())
 result_path=ROOT/args.output
 results=[r for r in json.loads(result_path.read_text())['results'] if r['minecraft']!=args.minecraft] if args.minecraft and result_path.exists() else []
@@ -22,5 +22,6 @@ for mc,versions in manifest['versions'].items():
    if source.exists():shutil.copytree(source,folder/sub,dirs_exist_ok=True)
   (ROOT/args.output).write_text(json.dumps({'metadata':manifest,'results':results},indent=2))
   print(f"END {mc} {api}: {'PASS' if run.returncode==0 else 'FAIL'} ({item['seconds']}s)",flush=True)
+  if args.fail_fast and run.returncode!=0:raise SystemExit(run.returncode)
 print('MATRIX FINISHED',flush=True)
 raise SystemExit(0 if all(row['exitCode']==0 for row in results) else 1)

@@ -22,8 +22,8 @@ public final class TierTagger implements ClientModInitializer {
   if(++ticks>=20){ticks=0;if(config.enabled && connection!=null && client.level!=null){
    var selected=dev.tiertagger.core.ProviderCatalog.ALL.stream().filter(dev.tiertagger.core.ProviderCatalog.Provider::supported).map(dev.tiertagger.core.ProviderCatalog.Provider::id).toList();
    for(String provider:selected){boolean active=provider.equals(config.primary.provider)||provider.equals(config.secondary.provider)||provider.equals(config.tertiary.provider);if(!active)continue;
-    if(!provider.equals("tiertests"))client.getConnection().getOnlinePlayers().stream().forEach(info->ranks.request(provider,info.getProfile().id(),info.getProfile().name()));
-    else client.level.players().stream().forEach(player->ranks.request(provider,player.getUUID()));
+    if(!provider.equals("tiertests"))client.getConnection().getOnlinePlayers().stream().filter(info->dev.tiertagger.core.PlayerLookup.supported(info.getProfile().id())).forEach(info->ranks.request(provider,info.getProfile().id(),info.getProfile().name()));
+    else client.level.players().stream().filter(player->dev.tiertagger.core.PlayerLookup.supported(player.getUUID())).forEach(player->ranks.request(provider,player.getUUID()));
    }
   }}
  });Runtime.getRuntime().addShutdownHook(new Thread(()->{ranks.close();RestrictionChecks.close();},"tier-tagger-close")); }
