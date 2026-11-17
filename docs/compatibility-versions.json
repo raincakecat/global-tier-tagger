@@ -1,6 +1,6 @@
 {
   "source": "https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml",
-  "checkedDate": "2026-11-14",
+  "checkedDate": "2026-11-17",
   "versions": {
     "1.21.11": [
       "0.141.6+1.21.11",
@@ -22,5 +22,6 @@
       "0.166.0+26.3",
       "0.165.2+26.3"
     ]
-  }
+  },
+  "scope": "Global Tier Tagger 1.0.2 provider additions"
 }

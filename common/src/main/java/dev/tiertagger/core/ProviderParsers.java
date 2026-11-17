@@ -9,6 +9,7 @@ public final class ProviderParsers {
  private static void put(Map<String,String> out,String raw,JsonElement value){String t=tier(value),m=mode(raw);if(t!=null&&GameModes.ALL.contains(m))out.put(m,t);}
  public static Map<String,String> parse(String provider,String json,UUID expected){JsonObject root=JsonParser.parseString(json).getAsJsonObject();Map<String,String> out=new HashMap<>();
   switch(provider){
+   case "global"->{identity(root,"uuid",expected);if(!"premium".equalsIgnoreCase(root.get("account_type").getAsString()))return Map.of();Set<String> seen=new HashSet<>();for(var item:root.getAsJsonArray("gamemodes")){JsonObject row=item.getAsJsonObject();String m=mode(row.get("gamemode").getAsString());if(!seen.add(m))throw new IllegalArgumentException("Duplicate game mode");JsonElement rank=row.get("rank");if(rank==null||rank.isJsonNull())continue;if(tier(rank)==null)throw new IllegalArgumentException("Invalid current tier");put(out,m,rank);}}
    case "pvptiers","jptiers"->{identity(root,"uuid",expected);for(var e:root.getAsJsonObject("rankings").entrySet()){JsonObject r=e.getValue().getAsJsonObject();int t=r.get("tier").getAsInt(),p=r.get("pos").getAsInt();if(t>=1&&t<=5&&(p==0||p==1))out.put(mode(e.getKey()),(p==0?"HT":"LT")+t);}}
    case "pvphq"->{identity(root,"_id",expected);for(var e:root.getAsJsonObject("data").entrySet()){JsonObject r=e.getValue().getAsJsonObject();if(r.has("gamesPlayed")&&r.get("gamesPlayed").getAsInt()>=1)put(out,e.getKey(),r.get("grantedTier"));}}
    case "lucnoxity"->{identity(root,"minecraftUUID",expected);for(var e:root.getAsJsonArray("gamemodeProfiles")){JsonObject r=e.getAsJsonObject(),g=r.getAsJsonObject("gamemode"),t=r.getAsJsonObject("currentTier");if(t==null)continue;String pos=t.get("tierPosition").getAsString();int num=t.get("tierNumber").getAsInt();String prefix=switch(pos){case "HIGH"->"HT";case "MID"->"MT";case "LOW"->"LT";default->"";};if(!prefix.isEmpty())put(out,g.get("name").getAsString(),new JsonPrimitive(prefix+num));}}
@@ -18,6 +19,14 @@ public final class ProviderParsers {
    case "nexus"->{identity(root,"uuid",expected);put(out,"vanilla",root.get("tier_id"));}
    default->throw new IllegalArgumentException("Unknown provider");
   }out.keySet().retainAll(GameModes.ALL);return Map.copyOf(out);
+ }
+ public static Map<String,String> prime(String json,String expectedName){
+  JsonObject player=JsonParser.parseString(json).getAsJsonObject();
+  if(!expectedName.equalsIgnoreCase(player.get("username").getAsString()))throw new IllegalArgumentException("Player name mismatch");
+  if(!"premium".equalsIgnoreCase(player.get("platform").getAsString()))return Map.of();
+  Map<String,String> ranks=new HashMap<>();Set<String> seen=new HashSet<>();
+  for(var item:player.getAsJsonArray("tiers")){JsonObject row=item.getAsJsonObject();String raw=row.get("gamemode").getAsString();String m=switch(raw){case "mace-spear"->"spear-mace";case "nethertite"->"nethpot";default->mode(raw);};if(!seen.add(m))throw new IllegalArgumentException("Duplicate game mode");JsonElement rank=row.get("tier");if(tier(rank)==null)throw new IllegalArgumentException("Invalid tier");put(ranks,m,rank);}
+  return Map.copyOf(ranks);
  }
  public static Map<UUID,Map<String,String>> snapshot(String provider,String json){JsonArray array=JsonParser.parseString(json).getAsJsonArray();Map<UUID,Map<String,String>> all=new HashMap<>();Map<UUID,Set<String>> conflicts=new HashMap<>();for(JsonElement element:array){JsonObject r=element.getAsJsonObject();String idKey=provider.equals("nova")?"minecraftUuid":"uuid";if(!r.has(idKey)||r.get(idKey).isJsonNull())continue;if(provider.equals("crack")&&(!r.has("account")||!"Premium".equalsIgnoreCase(r.get("account").getAsString())))continue;UUID uuid;try{uuid=MinecraftIdentityResolver.uuid(r.get(idKey).getAsString());}catch(RuntimeException ex){continue;}if(!PlayerLookup.supported(uuid))continue;JsonObject tiers=r.getAsJsonObject("tiers");if(tiers==null)continue;Map<String,String> ranks=all.computeIfAbsent(uuid,u->new HashMap<>());for(var e:tiers.entrySet()){Map<String,String> one=new HashMap<>();put(one,e.getKey(),e.getValue());one.forEach((m,t)->{if(ranks.containsKey(m)&&!ranks.get(m).equals(t))conflicts.computeIfAbsent(uuid,u->new HashSet<>()).add(m);else ranks.put(m,t);});}}conflicts.forEach((id,modes)->modes.forEach(all.get(id)::remove));Map<UUID,Map<String,String>> immutable=new HashMap<>();all.forEach((id,map)->immutable.put(id,Map.copyOf(map)));return Map.copyOf(immutable);}
 }

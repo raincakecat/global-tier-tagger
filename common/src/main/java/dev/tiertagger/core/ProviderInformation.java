@@ -18,6 +18,9 @@ public final class ProviderInformation {
   case "jptiers"->List.of("Player profiles are matched by Minecraft UUID.","Game modes use the mod's shared names and icon settings.");
   case "tiermc"->List.of("Player profiles are matched by Minecraft UUID.","Returned game modes are mapped to the mod's shared game modes.");
   case "crack"->List.of("Premium accounts only. Cracked-account records are excluded.","The public snapshot is cached locally for fifteen minutes.");
+  case "global"->List.of("Player ranks are fetched using their premium Minecraft UUID.","Current ranks are displayed; peak tiers are not substituted.");
+  case "prime"->List.of("Premium accounts only, using PrimeTiers' current username records.","Current Minecraft identity is checked before displaying returned tiers.","PrimeTiers does not retain tested-account UUIDs. Renamed or reused usernames may show missing or incorrect historical ranks.","Results are cached for five minutes and group lookups are batched.");
+  case "collapse"->List.of("Ranks are fetched in UUID batches and cached for at least one minute.","Only profiles with a linked Minecraft identity can display ranks.","Imported profiles without a linked identity remain unavailable.");
   default->throw new IllegalArgumentException("No supported provider information: "+id);
  };}
 }

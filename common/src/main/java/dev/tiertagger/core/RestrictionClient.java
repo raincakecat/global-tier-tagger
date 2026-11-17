@@ -49,7 +49,7 @@ public final class RestrictionClient implements AutoCloseable {
   try{
    while(true){long wait;synchronized(this){if(!flight.wanted())return;wait=Math.max(nextRequestAt,pausedUntil)-System.currentTimeMillis();if(wait<=0){nextRequestAt=System.currentTimeMillis()+spacing;break;}}Thread.sleep(Math.min(wait,250));}
    CompletableFuture<HttpResponse<byte[]>> request;
-   synchronized(this){if(closed||!flight.wanted())return;status="Checking";request=http.sendAsync(HttpRequest.newBuilder(base.resolve(path)).timeout(Duration.ofSeconds(10)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.1 RestrictTiers integration").GET().build(),HttpBodies.limited(2*1024*1024));flight.http=request;}
+   synchronized(this){if(closed||!flight.wanted())return;status="Checking";request=http.sendAsync(HttpRequest.newBuilder(base.resolve(path)).timeout(Duration.ofSeconds(10)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.2 RestrictTiers integration").GET().build(),HttpBodies.limited(2*1024*1024));flight.http=request;}
    HttpResponse<byte[]> response;
    try{response=request.get(11,TimeUnit.SECONDS);}catch(TimeoutException timeout){request.cancel(true);throw new Failure("SERVICE_UNAVAILABLE","Restriction request timed out","",0);}catch(ExecutionException wrapped){if(wrapped.getCause() instanceof Exception cause)throw cause;throw wrapped;}
    byte[] bytes=response.body();

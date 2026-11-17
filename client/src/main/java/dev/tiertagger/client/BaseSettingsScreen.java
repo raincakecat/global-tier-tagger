@@ -170,6 +170,7 @@ public abstract class BaseSettingsScreen extends Screen {
    var found=catalog().stream().filter(p->SearchAliases.provider(p,discordFilter)).toList();int start=list(x,bodyTop+37,w,bodyBottom,found.size(),23);
    for(int i=start;i<Math.min(scroll.total(),start+scroll.visible());i++){var p=found.get(i);button(p.name()+" | View Discords",x,scrollY+(i-start)*23,usable,()->{history.push(new Destination(page,null,modeTarget,infoProvider));discordDetail=p;});}
   }else{
+   if(discordDetail.discords().isEmpty())label("No community Discord link supplied",x,bodyTop+24,usable);
    int start=list(x,bodyTop+22,w,bodyBottom,discordDetail.discords().size(),27);
    for(int i=start;i<Math.min(scroll.total(),start+scroll.visible());i++){String url=discordDetail.discords().get(i);int py=scrollY+(i-start)*27;label(ProviderCatalog.discordLabel(url),x+4,py+5,usable/2-8);
     button("Open "+url,x+usable/2,py,usable/4-2,()->net.minecraft.client.gui.screens.ConfirmLinkScreen.confirmLinkNow(this,java.net.URI.create(url))).displayLabel="Open";

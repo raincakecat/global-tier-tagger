@@ -3,7 +3,7 @@
 <img src="branding/icon-512.png" width="96" height="96" alt="Global Tier Tagger">
 
 A client-side Fabric mod by **raincakecat** for viewing Minecraft PvP tiers
-from 14 tier lists in one place.
+from 17 tier lists in one place.
 
 ## Download
 
@@ -37,7 +37,10 @@ Both keys can be changed in Minecraft Controls.
 
 McTiers, PvP Tiers, SubTiers, Lucnoxity, tiertests.com, MCPVP.com, PvPHQ,
 Nova Tiers, Prestige Tiers, Lunar Tiers, Nexus Tiers, JP Tiers, TierMC,
-and Crack Tiers.
+Crack Tiers, Global Tierlist, PrimeTiers, and Collapse Tiers.
+
+PrimeTiers uses premium username records; username changes or reuse can affect its ranks.
+Collapse Tiers displays ranks only for profiles with a linked Minecraft identity.
 
 ## Source and support
 

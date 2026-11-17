@@ -17,13 +17,14 @@ public final class ProviderCatalog {
   new Provider("jptiers","JP Tiers",null,List.of("https://discord.gg/J3WS26NAfY")),
   new Provider("tiermc","TierMC",null,List.of("https://discord.gg/VswgH4CT5c","https://discord.gg/rYvJZUbX5R","https://discord.gg/87VuPEDxu7","https://discord.gg/kpBB29ZAnG","https://discord.gg/VhsdMPTT5y","https://discord.gg/XWD5VPwmPe","https://discord.gg/VD9DmsnrM8","https://discord.gg/AjbMab5BVf")),
   new Provider("crack","Crack Tiers",null,List.of("https://discord.gg/qypJ4GZv23")),
-  new Provider("global","Global Tierlist","API provides names but no verified UUID mapping",List.of("https://discord.gg/qaKa93AeUE")),
+  new Provider("global","Global Tierlist",null,List.of("https://discord.gg/qaKa93AeUE")),
+  new Provider("prime","PrimeTiers",null,List.of("https://discord.gg/HRKfDUS5YQ")),
+  new Provider("collapse","Collapse Tiers",null,List.of()),
   new Provider("solar","Solar Tiers","UUID identity mapping not supplied",List.of()),
   new Provider("astra","AstraTiers","UUID identity mapping not supplied",List.of("https://discord.gg/ZYfQYvNkP7")),
   new Provider("cbtl","Combat Tierlist","UUID identity mapping not supplied",List.of()),
   new Provider("central","Central Tierlist","API hostname currently does not resolve",List.of()),
-  new Provider("crystalranked","Crystal Ranked","Working API endpoint not supplied",List.of()),
-  new Provider("prime","PrimeTiers","Premium Minecraft UUID mapping not provided",List.of("https://discord.gg/HRKfDUS5YQ")));
+  new Provider("crystalranked","Crystal Ranked","Working API endpoint not supplied",List.of()));
  public static final List<Provider> SUPPORTED=ALL.stream().filter(Provider::supported).toList();
  public static Provider find(String id){return ALL.stream().filter(p->p.id.equals(id)).findFirst().orElse(null);}
  public static String name(String id){Provider p=find(id);return p==null?"Off":p.name;}

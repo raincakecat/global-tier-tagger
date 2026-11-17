@@ -118,7 +118,7 @@ abstract class QueuedRankingProvider implements RankingProvider {
  private String exchange(URI uri)throws Exception{
   awaitBudget();int epoch=requestGeneration.get();
   CompletableFuture<HttpResponse<byte[]>> future;
-  synchronized(this){if(!valid(epoch))throw new CancellationException();future=http.sendAsync(HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(12)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.1").GET().build(),HttpBodies.limited(bulk?8*1024*1024:1024*1024));activeHttp=future;}
+  synchronized(this){if(!valid(epoch))throw new CancellationException();future=http.sendAsync(HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(12)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.2").GET().build(),HttpBodies.limited(bulk?8*1024*1024:1024*1024));activeHttp=future;}
   HttpResponse<byte[]> response;
   try{response=future.get(13,TimeUnit.SECONDS);}catch(ExecutionException e){if(e.getCause() instanceof Exception cause)throw cause;throw e;}catch(TimeoutException e){future.cancel(true);throw new HttpTimeoutException("Request timed out");}
   finally{synchronized(this){if(activeHttp==future)activeHttp=null;}}
