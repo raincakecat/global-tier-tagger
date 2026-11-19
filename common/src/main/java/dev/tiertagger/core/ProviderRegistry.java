@@ -12,6 +12,9 @@ public final class ProviderRegistry implements AutoCloseable {
  public void requestForeground(String provider,UUID player,String name){var p=providers.get(provider);if(p!=null){p.identify(player,name);p.requestForeground(player);}}
  public long retryAtMillis(String id){var p=providers.get(id);return p==null?0:p.retryAtMillis();}
  public long lastSuccessMillis(String id){var p=providers.get(id);return p==null?0:p.lastSuccessMillis();}
+ public void suspend(){providers.values().forEach(RankingProvider::suspend);}
+ public void retainBackground(Set<String> selected){providers.forEach((id,p)->{if(!selected.contains(id))p.suspend();});}
+ public void requestBackground(String provider,UUID id,String name,boolean nearby){var p=providers.get(provider);if(p!=null){p.identify(id,name);p.requestBackground(id,nearby);}}
  public void clear(){providers.values().forEach(RankingProvider::clear);}
  public String status(String provider){RankingProvider p=providers.get(provider);return p==null?"Provider unavailable":p.status();}
  public ProviderStatus connection(String id){RankingProvider p=providers.get(id);return p==null?new ProviderStatus(ProviderStatus.State.ERROR,"Provider unavailable"):p.connection();}

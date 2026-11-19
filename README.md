@@ -22,7 +22,10 @@ Supports **1.21.11, 26.1.2, 26.2, and 26.3**. No server installation is needed.
 - Find provider status, community Discords, and support in the menu.
 
 Untested modes stay hidden. Results are cached, so new tiers may take time
-to appear. Only supported premium Minecraft identities are used.
+to appear. Nearby players refresh after at least five minutes; distant tab players
+refresh after at least fifteen minutes. Provider-specific longer cache times still apply.
+Cached results survive reconnects during the same game session. Only supported
+premium Minecraft identities are used.
 
 ## Controls
 

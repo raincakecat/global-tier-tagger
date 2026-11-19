@@ -13,14 +13,14 @@ public final class ProviderInformation {
   case "pvphq"->List.of("A game mode needs at least one game played before its tier is displayed.","Default tiers for modes with zero games are hidden.","Failed requests wait at least 60 seconds before another attempt. Successful player results are cached for five minutes.");
   case "nova"->List.of("Uses the public player snapshot, cached locally for one hour.","Only UUID-matched premium player records are displayed.");
   case "prestige"->List.of("Can return rankings from multiple communities.","Conflicting ranks for the same player and game mode are omitted rather than choosing an arbitrary result.");
-  case "lunar"->List.of("Player tiers are fetched using the premium Minecraft UUID.","Crystal and Vanilla use the same shared game mode.");
+  case "lunar"->List.of("Player tiers are fetched using the premium Minecraft UUID. Background refreshes are spaced five to fifteen minutes apart.","Crystal and Vanilla use the same shared game mode.");
   case "nexus"->List.of("Current integrations cover Crystal, Mace, Spear Mace and SMP.","Sword is not included in the current integration.");
   case "jptiers"->List.of("Player profiles are matched by Minecraft UUID.","Game modes use the mod's shared names and icon settings.");
   case "tiermc"->List.of("Player profiles are matched by Minecraft UUID.","Returned game modes are mapped to the mod's shared game modes.");
   case "crack"->List.of("Premium accounts only. Cracked-account records are excluded.","The public snapshot is cached locally for fifteen minutes.");
   case "global"->List.of("Player ranks are fetched using their premium Minecraft UUID.","Current ranks are displayed; peak tiers are not substituted.");
   case "prime"->List.of("Premium accounts only, using PrimeTiers' current username records.","Current Minecraft identity is checked before displaying returned tiers.","PrimeTiers does not retain tested-account UUIDs. Renamed or reused usernames may show missing or incorrect historical ranks.","Results are cached for five minutes and group lookups are batched.");
-  case "collapse"->List.of("Ranks are fetched in UUID batches and cached for at least one minute.","Only profiles with a linked Minecraft identity can display ranks.","Imported profiles without a linked identity remain unavailable.");
+  case "collapse"->List.of("Ranks are fetched in UUID batches. Background refreshes are spaced five to fifteen minutes apart.","Only profiles with a linked Minecraft identity can display ranks.","Imported profiles without a linked identity remain unavailable.");
   default->throw new IllegalArgumentException("No supported provider information: "+id);
  };}
 }

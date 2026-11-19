@@ -19,7 +19,7 @@ abstract class QueuedRankingProvider implements RankingProvider {
   final Map<String,String> ranks;final Exception cause;
   PartialFailure(Map<String,String> ranks,Exception cause){super(cause);this.ranks=Map.copyOf(ranks);this.cause=cause;}
  }
- private record Entry(Map<String,String> ranks,long expires,boolean complete){}
+ private record Entry(Map<String,String> ranks,long expires,boolean complete,long updated){}
  private final String providerId;
  private final long ttl;
  private final boolean bulk;
@@ -31,7 +31,7 @@ abstract class QueuedRankingProvider implements RankingProvider {
  private final Map<UUID,Job> pending=new HashMap<>();
  private Map<UUID,Map<String,String>> snapshot=Map.of();
  private long snapshotExpires,pausedUntil,lastSuccess,nextStartNanos,spacingNanos=1_000_000_000L;
- private int generation;
+ private int generation,consecutiveFailures;
  private boolean closed;
  private String service="Not checked";
  private UUID failedPlayer;
@@ -51,7 +51,7 @@ abstract class QueuedRankingProvider implements RankingProvider {
  public synchronized long retryAtMillis(){return pausedUntil;}
  public synchronized long lastSuccessMillis(){return lastSuccess;}
  private UUID jobKey(UUID id){return bulk?new UUID(0,0):id;}
- public synchronized boolean resolved(UUID id){if(!PlayerLookup.supported(id))return false;if(bulk)return snapshotExpires>now.getAsLong();var e=cache.get(id);return e!=null&&e.complete&&e.expires>now.getAsLong();}
+ public synchronized boolean resolved(UUID id){if(!PlayerLookup.supported(id))return false;if(bulk)return snapshotExpires>now.getAsLong();var e=cache.get(id);return e!=null&&e.complete&&e.expires>now.getAsLong()&&!outcomes.containsKey(jobKey(id));}
  public synchronized Optional<String> tier(UUID id,String mode){if(!PlayerLookup.supported(id))return Optional.empty();if(bulk)return snapshotExpires>now.getAsLong()?Optional.ofNullable(snapshot.getOrDefault(id,Map.of()).get(mode)):Optional.empty();var e=cache.get(id);return e!=null&&e.expires>now.getAsLong()?Optional.ofNullable(e.ranks.get(mode)):Optional.empty();}
  public synchronized PlayerLookup lookup(UUID id){
   if(!PlayerLookup.supported(id))return new PlayerLookup(PlayerLookup.Phase.SKIPPED,"Unsupported Minecraft UUID",0);
@@ -64,6 +64,7 @@ abstract class QueuedRankingProvider implements RankingProvider {
   return outcome==null?PlayerLookup.of(PlayerLookup.Phase.NOT_REQUESTED):outcome;
  }
  public void request(UUID id){enqueue(id,false);}
+ public synchronized void requestBackground(UUID id,boolean nearby){var e=cache.get(id);long interval=Math.max(ttl,nearby?300_000:900_000);if(!bulk&&e!=null&&e.complete&&now.getAsLong()-e.updated<interval)return;enqueue(id,false);}
  public void requestForeground(UUID id){enqueue(id,true);}
  public synchronized void requestRetry(UUID preferred){
   UUID id=failedPlayer==null?preferred:failedPlayer;
@@ -71,8 +72,9 @@ abstract class QueuedRankingProvider implements RankingProvider {
   var prior=outcomes.get(jobKey(id));if(prior!=null&&prior.retryAtMillis()>now.getAsLong())return;
   enqueue(id,true);
  }
+ private synchronized boolean fresh(UUID id){if(bulk)return snapshotExpires>now.getAsLong();var e=cache.get(id);return e!=null&&e.complete&&now.getAsLong()-e.updated<ttl;}
  private synchronized void enqueue(UUID id,boolean foreground){
-  if(closed||!PlayerLookup.supported(id)||resolved(id))return;
+  if(closed||!PlayerLookup.supported(id)||fresh(id))return;
   UUID key=jobKey(id);var prior=outcomes.get(key);
   if(prior!=null&&prior.failed()&&prior.retryAtMillis()>now.getAsLong())return;
   Job existing=pending.get(key);
@@ -90,8 +92,8 @@ abstract class QueuedRankingProvider implements RankingProvider {
    requestGeneration.set(epoch);
    try{
     if(bulk){var values=fetchSnapshot();synchronized(QueuedRankingProvider.this){if(!valid(epoch))return;snapshot=Map.copyOf(values);snapshotExpires=now.getAsLong()+ttl;}}
-    else{var ranks=fetch(id);synchronized(QueuedRankingProvider.this){if(!valid(epoch))return;cache.put(id,new Entry(Map.copyOf(ranks),now.getAsLong()+ttl,true));}}
-    synchronized(QueuedRankingProvider.this){if(valid(epoch)){outcomes.remove(key);lastSuccess=now.getAsLong();failedPlayer=null;service=connectedLabel();trim();}}
+    else{var ranks=fetch(id);synchronized(QueuedRankingProvider.this){if(!valid(epoch))return;cache.put(id,new Entry(Map.copyOf(ranks),now.getAsLong()+Math.max(ttl,960_000),true,now.getAsLong()));}}
+    synchronized(QueuedRankingProvider.this){if(valid(epoch)){outcomes.remove(key);lastSuccess=now.getAsLong();consecutiveFailures=0;failedPlayer=null;service=connectedLabel();trim();}}
    }catch(PartialFailure e){failure(this,e.cause,e.ranks);}
    catch(Exception e){failure(this,e,null);if(e instanceof InterruptedException)Thread.currentThread().interrupt();}
    finally{synchronized(QueuedRankingProvider.this){pending.remove(key,this);}requestGeneration.remove();}
@@ -104,9 +106,9 @@ abstract class QueuedRankingProvider implements RankingProvider {
   long delay=error instanceof HttpFailure h?Math.max(60,h.retrySeconds)*1000:60_000;
   if(error instanceof HttpFailure h&&(h.code==400||h.code==422)&&!bulk)delay=300_000;
   long retry=now.getAsLong()+delay;
-  if(serviceFailure){pausedUntil=Math.max(pausedUntil,retry);service=ProviderStatus.failure(error).label();failedPlayer=job.id;}
+  if(serviceFailure){delay=Math.max(delay,Math.min(900_000L,60_000L << Math.min(4,consecutiveFailures++)));retry=now.getAsLong()+delay;pausedUntil=Math.max(pausedUntil,retry);service=ProviderStatus.failure(error).label();failedPlayer=job.id;}
   String reason=error instanceof HttpFailure h?((h.code==400||h.code==422)?"Player request rejected (HTTP "+h.code+")":ProviderStatus.http(h.code).reason()):ProviderStatus.failure(error).reason();
-  if(partial!=null&&!partial.isEmpty())cache.put(job.id,new Entry(partial,now.getAsLong()+ttl,false));
+  if(partial!=null&&!partial.isEmpty())cache.put(job.id,new Entry(partial,now.getAsLong()+Math.max(ttl,960_000),false,now.getAsLong()));
   outcomes.put(job.key,new PlayerLookup(partial!=null&&!partial.isEmpty()?PlayerLookup.Phase.PARTIAL:PlayerLookup.Phase.FAILED,reason,retry));trim();
  }
  private void trim(){cache.entrySet().removeIf(e->e.getValue().expires<=now.getAsLong());while(cache.size()>2048)cache.remove(cache.keySet().iterator().next());while(outcomes.size()>4096)outcomes.remove(outcomes.keySet().iterator().next());}
@@ -118,7 +120,7 @@ abstract class QueuedRankingProvider implements RankingProvider {
  private String exchange(URI uri)throws Exception{
   awaitBudget();int epoch=requestGeneration.get();
   CompletableFuture<HttpResponse<byte[]>> future;
-  synchronized(this){if(!valid(epoch))throw new CancellationException();future=http.sendAsync(HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(12)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.2").GET().build(),HttpBodies.limited(bulk?8*1024*1024:1024*1024));activeHttp=future;}
+  synchronized(this){if(!valid(epoch))throw new CancellationException();TrafficStats.request(providerId);future=http.sendAsync(HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(12)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.3").GET().build(),HttpBodies.limited(bulk?8*1024*1024:1024*1024,n->TrafficStats.bytes(providerId,n)));activeHttp=future;}
   HttpResponse<byte[]> response;
   try{response=future.get(13,TimeUnit.SECONDS);}catch(ExecutionException e){if(e.getCause() instanceof Exception cause)throw cause;throw e;}catch(TimeoutException e){future.cancel(true);throw new HttpTimeoutException("Request timed out");}
   finally{synchronized(this){if(activeHttp==future)activeHttp=null;}}
@@ -131,6 +133,7 @@ abstract class QueuedRankingProvider implements RankingProvider {
   }
   return new String(response.body(),StandardCharsets.UTF_8);
  }
+ public synchronized void suspend(){generation++;if(activeHttp!=null)activeHttp.cancel(true);activeHttp=null;worker.getQueue().clear();pending.clear();if(service.equals("Checking"))service=lastSuccess==0?"Not checked":connectedLabel();}
  public synchronized void clear(){generation++;if(activeHttp!=null)activeHttp.cancel(true);activeHttp=null;worker.getQueue().clear();pending.clear();cache.clear();outcomes.clear();snapshot=Map.of();snapshotExpires=0;lastSuccess=0;failedPlayer=null;service="Not checked";onClear();}
  public void close(){synchronized(this){if(closed)return;clear();closed=true;worker.shutdownNow();}http.close();}
 }

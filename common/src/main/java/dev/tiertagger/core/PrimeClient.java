@@ -14,7 +14,7 @@ public final class PrimeClient extends BatchedRankingProvider {
  private final Map<UUID,String> names=new LinkedHashMap<>();
  private Map<UUID,String> batchNames=Map.of();
 
- public PrimeClient(MinecraftIdentityResolver identities){this(URI.create("https://api.primetiers.net/api/players"),identities::resolve);}
+ public PrimeClient(MinecraftIdentityResolver identities){this(URI.create("https://primetiers.net/api/players"),identities::resolve);}
  PrimeClient(URI endpoint,Function<String,CompletableFuture<MinecraftIdentityResolver.Identity>> resolve){super("prime",endpoint);this.resolve=resolve;}
  @Override protected int batchSize(){return 50;}
  @Override public synchronized void identify(UUID id,String name){
@@ -29,7 +29,7 @@ public final class PrimeClient extends BatchedRankingProvider {
   synchronized(this){for(UUID id:batch){String name=names.get(id);if(name==null)throw new IllegalStateException("Player name unavailable");requested.put(id,name);}}
   batchNames=Map.copyOf(requested);
   String query=URLEncoder.encode(String.join(",",requested.values()),java.nio.charset.StandardCharsets.UTF_8);
-  return HttpRequest.newBuilder(URI.create(endpoint+"?names="+query)).timeout(Duration.ofSeconds(10)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.2").GET().build();
+  return HttpRequest.newBuilder(URI.create(endpoint+"?names="+query)).timeout(Duration.ofSeconds(10)).header("Accept","application/json").header("User-Agent","GlobalTierTagger/1.0.3").GET().build();
  }
  @Override protected BatchResult parseBatch(String json,List<UUID> batch)throws Exception {
   Map<UUID,String> requested=batchNames;
